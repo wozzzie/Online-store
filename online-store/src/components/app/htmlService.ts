@@ -4,13 +4,18 @@ function ellipsis(string = '', maxLenght = 30) {
     }
     return string;
 }
+
 export class HTMLService {
     paintProduct(product) {
         return `
         <li data-id="${product.id}">
-          <img src="${product.images[0]}" title="${product.title}" /> 
-          <small>${ellipsis(product.title, 50)}</small>
-          <small><strong>$${product.price}</strong></small>
+          <div><img src="${product.images[0]}" title="${product.title}" /></div>
+          <div class="data-title">${ellipsis(product.title, 50)}</div>
+          <div class="data-price"></div><small><strong>$${product.price}</strong></small></div>
+          <div>
+            <a href="javascript:void(0)" class="show__button">Show more</a>
+            <a href="javascript:void(0)" class="cart__button"></a>
+          </div>
         </li>
       `;
     }

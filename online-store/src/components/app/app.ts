@@ -12,10 +12,10 @@ const filterInput = document.getElementById('filter');
 
 filterInput.addEventListener('input', (event) => {
     const value = event.target.value;
-    const filteredProducts = productService.searchByT(value);
-    const filteredProducts2 = productService.searchByD(value);
+    const filteredProducts = productService.searchByString(value);
 
-    renderProducts(filteredProducts && filteredProducts2);
+    console.log(filteredProducts);
+    renderProducts(filteredProducts);
 });
 
 productsContainer.addEventListener('click', (event) => {
