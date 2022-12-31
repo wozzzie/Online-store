@@ -1,4 +1,5 @@
 export class CartService {
+    public cart: object;
     constructor() {
         this.cart = {};
     }
@@ -12,6 +13,7 @@ export class CartService {
         }
 
         this.cart[key] = {
+            image: product.images[0],
             title: product.title,
             price: product.price,
             amount: 1,

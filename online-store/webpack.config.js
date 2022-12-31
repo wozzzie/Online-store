@@ -8,9 +8,13 @@ const baseConfig = {
     mode: 'development',
     module: {
         rules: [
+            // {
+            //     test: /\.(scss|css)$/,
+            //     use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+            // },
             {
-                test: /\.(scss|css)$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: /\.ts$/i,

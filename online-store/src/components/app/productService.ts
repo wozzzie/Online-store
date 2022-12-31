@@ -1,37 +1,34 @@
+import { IData } from '../types';
+
 export class ProductService {
-    public products: string[];
+    public products: IData[];
     constructor(products = []) {
         this.products = products;
     }
 
-    searchByString(search = '') {
+    searchBy(search = '') {
         if (!search.trim()) return this.products;
 
-        return (
-            this.products.filter((product) => {
-                const searchByTitle = product.title.toLowerCase().includes(search.toLowerCase());
-                return searchByTitle;
-            }) &&
-            this.products.filter((product) => {
-                const searchByCategory = product.category.toLowerCase().includes(search.toLowerCase());
-                return searchByCategory;
-            }) &&
-            this.products.filter((product) => {
-                const searchByDescr = product.description.toLowerCase().includes(search.toLowerCase());
-                return searchByDescr;
-            }) &&
-            this.products.filter((product) => {
-                const searchByBrand = product.brand.toLowerCase().includes(search.toLowerCase());
-                return searchByBrand;
-            })
-        );
+        return this.products.filter((product) => {
+            return (
+                product.title.toLowerCase().includes(search.toLowerCase()) ||
+                product.description.toLowerCase().includes(search.toLowerCase()) ||
+                product.brand.toLowerCase().includes(search.toLowerCase()) ||
+                product.category.toLowerCase().includes(search.toLowerCase()) ||
+                product.title.toLowerCase().includes(search.toLowerCase()) ||
+                product.price.toString().includes(search) ||
+                product.rating.toString().includes(search) ||
+                product.discountPercentage.toString().includes(search) ||
+                product.stock.toString().includes(search)
+            );
+        });
     }
 
-    get(index) {
+    get(index: number) {
         return this.products[index];
     }
 
-    getById(id) {
+    getById(id: number) {
         return this.products.find((product) => {
             return product.id === id;
         });

@@ -2,49 +2,80 @@ import { HTMLService } from './htmlService';
 import { CartService } from './cartService';
 import { ProductService } from './productService';
 
-let productService: string;
+let productService;
 const cartService = new CartService();
 const htmlService = new HTMLService();
 
 const productsContainer = document.getElementById('products');
-const cartContainer = document.getElementById('cart');
 const filterInput = document.getElementById('filter');
+const cartContainer = document.getElementById('cart');
+const circle = document.getElementById('circle');
+const cartPrice = document.getElementById('cart-price');
 
-filterInput.addEventListener('input', (event) => {
-    const value = event.target.value;
-    const filteredProducts = productService.searchByString(value);
+function getPrice() {
+    const price = cartService.getInfo().totalPrice;
+    cartPrice ? (cartPrice.innerHTML = price) : false;
+}
 
-    console.log(filteredProducts);
-    renderProducts(filteredProducts);
-});
+// counter for the cart circle
+let counter = 0;
 
-productsContainer.addEventListener('click', (event) => {
-    const id = event.target.dataset.id ? event.target.dataset.id : event.target.closest('li')?.dataset.id;
+function countCard() {
+    counter++;
+    circle ? (circle.innerHTML = counter.toString()) : false;
+}
 
-    if (id) {
-        cartService.add(productService.getById(+id));
-        renderCart();
-    }
-});
+function decountCard() {
+    counter--;
+    circle ? (circle.innerHTML = counter.toString()) : false;
+}
 
-cartContainer.addEventListener('click', (event) => {
-    const type = event.target?.dataset.type;
-    const id = event.target?.dataset.id;
+if (filterInput) {
+    filterInput.addEventListener('input', (event) => {
+        const value = event.target.value;
+        const filteredProducts = productService.searchBy(value);
 
-    switch (type) {
-        case 'clear':
-            cartService.clear();
+        renderProducts(filteredProducts);
+    });
+}
+
+if (productsContainer) {
+    productsContainer.addEventListener('click', (event) => {
+        const id = event.target.dataset.id ? event.target.dataset.id : event.target.closest('li')?.dataset.id;
+        if (id) {
+            cartService.add(productService.getById(+id));
+            countCard();
+            getPrice();
             renderCart();
-            break;
-        case 'remove':
-            cartService.remove(id);
-            renderCart();
-            break;
-    }
-});
+        }
+    });
+}
+
+if (cartContainer) {
+    cartContainer.addEventListener('click', (event) => {
+        const type = event.target?.dataset.type;
+        const id = event.target?.dataset.id;
+
+        switch (type) {
+            case 'clear':
+                cartService.clear();
+                counter = 0;
+                circle ? (circle.innerHTML = counter.toString()) : false;
+                getPrice();
+                renderCart();
+                break;
+            case 'remove':
+                cartService.remove(id);
+                decountCard();
+                getPrice();
+                renderCart();
+                break;
+        }
+    });
+}
 
 function renderProducts(products) {
-    productsContainer.innerHTML = htmlService.paintProducts(products);
+    productsContainer.innerHTML = htmlService.paintProducts(products)
 }
 
 function renderCart() {
@@ -64,6 +95,5 @@ export async function start() {
         productsContainer.innerHTML = htmlService.paintError(e);
     }
 }
-// }
 
 // export default App;
