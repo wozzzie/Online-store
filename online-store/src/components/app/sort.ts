@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { IData } from '../types';
 
 const Sorts = ['price-ascent', 'price-descent', 'rating-ascent', 'rating-descent'];

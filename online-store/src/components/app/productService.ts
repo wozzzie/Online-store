@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { IData } from '../types';
 
 export class ProductService {
@@ -6,11 +9,11 @@ export class ProductService {
         this.products = products;
     }
 
-    searchBy(search = '') {
+    searchBy(products, search = '') {
         if (!search.trim()) return this.products;
 
-        return this.products.filter((product) => {
-            return (
+        return this.products.filter(
+            (product) =>
                 product.title.toLowerCase().includes(search.toLowerCase()) ||
                 product.description.toLowerCase().includes(search.toLowerCase()) ||
                 product.brand.toLowerCase().includes(search.toLowerCase()) ||
@@ -20,8 +23,13 @@ export class ProductService {
                 product.rating.toString().includes(search) ||
                 product.discountPercentage.toString().includes(search) ||
                 product.stock.toString().includes(search)
-            );
-        });
+        );
+    }
+
+    searchByFilter(search = '', param) {
+        if (!search.trim()) return this.products;
+
+        return this.products.filter((product) => product[param].toLowerCase().includes(search.toLowerCase()));
     }
 
     get(index: number) {

@@ -1,0 +1,40 @@
+@import 'nouislider/dist/nouislider.css';
+
+.noUi-connect {
+    background-color: #3b3486;
+}
+
+.noUi-target {
+    background-color: #8c71bb;
+    border: none;
+    border-radius: 10rem;
+    box-shadow: none;
+    height: 7px;
+    margin: 0 1.6rem;
+}
+
+.noUi-handle::after,
+.noUi-handle::before {
+    display: none;
+}
+
+.noUi-handle {
+    box-shadow: none;
+    border-radius: 100%;
+    background-color: #3b3486;
+    border: 0.3rem solid lighten(#3b3486, 10%);
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 20px;
+    height: 20px;
+    right: -0.7rem;
+    top: -0.4rem;
+    cursor: pointer;
+}
+
+.price_value {
+    margin-top: 20px;
+    text-align: center;
+    color: black;
+}
