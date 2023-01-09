@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 class Router {
     routes = [];
     mode = null;
@@ -15,7 +18,7 @@ class Router {
         return this;
     };
 
-    remove = path => {
+    remove = (path) => {
         for (let i = 0; i < this.routes.length; i += 1) {
             if (this.routes[i].path === path) {
                 this.routes.slice(i, 1);
@@ -63,7 +66,7 @@ class Router {
         if (this.current === this.getFragment()) return;
         this.current = this.getFragment();
 
-        this.routes.some(route => {
+        this.routes.some((route) => {
             const match = this.current.match(route.path);
             if (match) {
                 match.shift();

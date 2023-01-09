@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { IData, Items } from '../types';
+import { IData } from '../types';
 
 function ellipsis(string = '', maxLenght = 30) {
     if (string.length > maxLenght) {
@@ -26,7 +26,9 @@ export class HTMLService {
             <span class="discount">SALE %${product.discountPercentage}</span>
             <div class="actions">
               <div class="show">
-                <a href="/#/${product.id}/${product.title}" data-type="card" data-id="${product.id}" class="show-button">Show more</a>
+                <a href="/#/${product.id}/${product.title}" data-type="card" data-id="${
+            product.id
+        }" class="show-button">Show more</a>
               </div>
               <div class="add-to-cart" data-type="add" data-id="${product.id}">
                 <a class="cart-button" title="Add to cart" data-type="add" data-id="${product.id}">

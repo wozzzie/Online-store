@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+
 import Router from './../controller/router';
 import { HTMLService } from './htmlService';
 import { CartService } from './cartService';
@@ -9,7 +10,7 @@ import { IData } from '../types';
 import { FilterService } from './filterService';
 import { initSliders } from '../slider/slider';
 
-let productService;
+let productService: ProductService;
 let displayedProducts;
 
 const cartService = new CartService();
@@ -26,7 +27,7 @@ router
         if (container) container.style.display = 'none';
         if (card) card.style.display = 'none';
     })
-    .add(/products\/(.*)\/specification\/(.*)/, (id, specification) => {
+    .add(/products\/(.*)\/specification\/(.*)/, () => {
         if (container) container.style.display = 'none';
         if (cart) cart.style.display = 'none';
         // alert(`products: ${id} specification: ${specification}`);
@@ -35,10 +36,6 @@ router
         // if (card) card.style.display = 'none';
         // if (cart) cart.style.display = 'none';
     });
-
-let productService: ProductService;
-const cartService: CartService = new CartService();
-const htmlService: HTMLService = new HTMLService();
 
 const main = document.getElementById('main');
 const container = document.getElementById('container');
@@ -112,6 +109,8 @@ if (productsContainer) {
                 if (id) {
                     createCard(productService.getById(+id));
                     slidesPlugin(1);
+                    if (container) container.style.display = 'none';
+                    if (cart) cart.style.display = 'none';
                 }
                 break;
         }
@@ -186,6 +185,8 @@ if (cartContainer) {
 
 function renderErrorSearch() {
     productsContainer.innerHTML = 'No items found. Try another filter option.';
+}
+
 function createCard(id: IData) {
     card ? (card.innerHTML = htmlService.paintCardItem(id)) : 'Error';
 }

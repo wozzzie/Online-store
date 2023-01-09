@@ -26,6 +26,5 @@ export type Items = {
         title: string;
         amount: number;
         price: number;
-    }
-    
+    };
 };

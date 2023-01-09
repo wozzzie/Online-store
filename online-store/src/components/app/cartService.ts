@@ -59,13 +59,13 @@ export class CartService {
         let promo = 'RSS';
         let reg = new RegExp('^' + promo + '$');
         if (reg.test(document.form.text.value)) {
-            let totalPrice = totalPrice * 0.9;
+            const totalPrice = totalPrice * 0.9;
             return totalPrice;
         }
         promo = 'NEWYEAR';
         reg = new RegExp('^' + promo + '$');
         if (reg.test(document.form.text.value)) {
-            let totalPrice = totalPrice * 0.8;
+            const totalPrice = totalPrice * 0.8;
         } else {
             alert('Promo is not valid!');
         }

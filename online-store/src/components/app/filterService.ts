@@ -1,9 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { DualRangeInput } from '../dualRangeInput/dualRangeInput';
-import { getRangeByParam } from '../dualRangeInput/helpers';
-import { renderSlider, Slider } from '../slider/slider';
+import { renderSlider } from '../slider/slider';
 import { IData } from '../types';
 
 export class FilterService {
@@ -50,10 +48,6 @@ export class FilterService {
     paintFilter(products: IData) {
         const category = this.filterFunction(products, 'category');
         const brand = this.filterFunction(products, 'brand');
-        const { maxValue: priceMax, minValue: priceMin, stepValue: priceStep } = getRangeByParam(products, 'price');
-        const { maxValue: stockMax, minValue: stockMin, stepValue: stockStep } = getRangeByParam(products, 'stock');
-
-        // const dualRangeInput = new DualRangeInput();
 
         return `<div class="btns_container"></div>
         <button class="filter_btn filter_reset">Reset Filters</button>
