@@ -1,8 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import Router from './../controller/router';
 import { HTMLService } from './htmlService';
 import { CartService } from './cartService';
 import { ProductService } from './productService';
+import { slidesPlugin } from './productCard';
+import { IData } from '../types';
 import { FilterService } from './filterService';
 import { initSliders } from '../slider/slider';
 
@@ -13,16 +16,58 @@ const cartService = new CartService();
 const htmlService = new HTMLService();
 const filterService = new FilterService();
 
+const router = new Router({
+    mode: 'hash',
+    root: '/',
+});
+
+router
+    .add(/cart/, () => {
+        if (container) container.style.display = 'none';
+        if (card) card.style.display = 'none';
+    })
+    .add(/products\/(.*)\/specification\/(.*)/, (id, specification) => {
+        if (container) container.style.display = 'none';
+        if (cart) cart.style.display = 'none';
+        // alert(`products: ${id} specification: ${specification}`);
+    })
+    .add('', () => {
+        // if (card) card.style.display = 'none';
+        // if (cart) cart.style.display = 'none';
+    });
+
+let productService: ProductService;
+const cartService: CartService = new CartService();
+const htmlService: HTMLService = new HTMLService();
+
+const main = document.getElementById('main');
+const container = document.getElementById('container');
 const productsContainer = document.getElementById('products');
 const filterInput = document.getElementById('filter');
-const cartContainer = document.getElementById('cart');
+
+const card = document.createElement('div');
+main?.appendChild(card);
+card.id = 'card';
+
+const cart = document.createElement('div');
+main?.appendChild(cart);
+cart.className = 'cart';
+const cartTitle = document.createElement('h2');
+cart.appendChild(cartTitle);
+cartTitle.innerText = 'Cart';
+const cartContainer = document.createElement('div');
+cart.appendChild(cartContainer);
+cartContainer.id = 'cart';
+
 const circle = document.getElementById('circle');
 const cartPrice = document.getElementById('cart-price');
 const filterContainer = document.getElementById('filter_container');
 
+const cardBtnAdd = document.getElementById('card-btn__add');
+
 function getPrice() {
     const price = cartService.getInfo().totalPrice;
-    cartPrice ? (cartPrice.innerHTML = price) : false;
+    cartPrice ? (cartPrice.innerHTML = `$` + price) : false;
 }
 
 // counter for the cart circle
@@ -38,24 +83,84 @@ function decountCard() {
     circle ? (circle.innerHTML = counter.toString()) : false;
 }
 
+// if (filterInput) {
+//     filterInput.addEventListener('input', (event) => {
+//         const target = event.target as HTMLInputElement;
+//         const value = target.value;
+//         const filteredProducts = productService.searchBy(value);
+
+//         renderProducts(filteredProducts);
+//     });
+// }
+
 if (productsContainer) {
     productsContainer.addEventListener('click', (event) => {
-        const id = event.target.dataset.id ? event.target.dataset.id : event.target.closest('li')?.dataset.id;
-        if (id) {
-            cartService.add(productService.getById(+id));
-            countCard();
-            getPrice();
-            renderCart();
+        const target = event.target as HTMLButtonElement;
+        const type = target.dataset.type;
+        const id = target.dataset.id;
+
+        switch (type) {
+            case 'add':
+                if (id) {
+                    cartService.add(productService.getById(+id));
+                    countCard();
+                    getPrice();
+                    renderCart();
+                }
+                break;
+            case 'card':
+                if (id) {
+                    createCard(productService.getById(+id));
+                    slidesPlugin(1);
+                }
+                break;
+        }
+    });
+}
+
+if (card) {
+    card.addEventListener('click', (event) => {
+        const target = event.target as HTMLButtonElement;
+        const type = target.dataset.type;
+        const id = target.dataset.id;
+
+        switch (type) {
+            case 'add':
+                if (id) {
+                    cardBtnAdd ? (cardBtnAdd.innerText = 'Added') : 'Error';
+                    cartService.add(productService.getById(+id));
+                    countCard();
+                    getPrice();
+                    renderCart();
+                }
+                break;
+            case 'remove':
+                if (id) {
+                    cartService.remove(+id);
+                    decountCard();
+                    getPrice();
+                    renderCart();
+                }
+                break;
         }
     });
 }
 
 if (cartContainer) {
     cartContainer.addEventListener('click', (event) => {
-        const type = event.target?.dataset.type;
-        const id = event.target?.dataset.id;
+        const target = event.target as HTMLButtonElement;
+        const type = target.dataset.type;
+        const id = target.dataset.id;
 
         switch (type) {
+            case 'add':
+                if (id) {
+                    cartService.add(productService.getById(+id));
+                    countCard();
+                    getPrice();
+                    renderCart();
+                }
+                break;
             case 'clear':
                 cartService.clear();
                 counter = 0;
@@ -64,25 +169,33 @@ if (cartContainer) {
                 renderCart();
                 break;
             case 'remove':
-                cartService.remove(id);
-                decountCard();
-                getPrice();
-                renderCart();
+                if (id) {
+                    cartService.remove(+id);
+                    decountCard();
+                    getPrice();
+                    renderCart();
+                }
                 break;
         }
     });
 }
 
-function renderProducts(products) {
-    productsContainer.innerHTML = htmlService.paintProducts(products);
-}
+// function renderProducts(products) {
+//     productsContainer.innerHTML = htmlService.paintProducts(products);
+// }
 
 function renderErrorSearch() {
     productsContainer.innerHTML = 'No items found. Try another filter option.';
+function createCard(id: IData) {
+    card ? (card.innerHTML = htmlService.paintCardItem(id)) : 'Error';
 }
 
-function renderCart() {
-    cartContainer.innerHTML = htmlService.paintCart(cartService.getInfo());
+export function renderProducts(products) {
+    productsContainer ? (productsContainer.innerHTML = htmlService.paintProducts(products)) : 'Error';
+}
+
+export function renderCart() {
+    cartContainer ? (cartContainer.innerHTML = htmlService.paintCart(cartService.getInfo())) : 'Error';
 }
 
 function renderFilter(products) {
@@ -202,6 +315,6 @@ export async function start() {
         searchProductsByName();
         // filterByBrands(productService.products);
     } catch (e) {
-        productsContainer.innerHTML = htmlService.paintError(e);
+        productsContainer ? (productsContainer.innerHTML = htmlService.paintError(e)) : 'Error';
     }
 }

@@ -1,17 +1,21 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import { IData, Items } from '../types';
+
 export class CartService {
-    public cart: object;
+    public cart: Items;
     constructor() {
         this.cart = {};
     }
 
-    add(product) {
+    add(product: IData) {
         const key = product.id;
 
         if (this.cart[key]) {
-            this.cart[key].amount++;
-            return;
+            for (let i = 0; i < product.stock; i++) {
+                this.cart[key].amount++;
+                return;
+            }
         }
 
         this.cart[key] = {
@@ -22,8 +26,9 @@ export class CartService {
         };
     }
 
-    remove(productId) {
+    remove(productId: number) {
         const amount = this.cart[productId].amount;
+
         if (amount === 1) {
             delete this.cart[productId];
         } else {
@@ -36,13 +41,7 @@ export class CartService {
     }
 
     getInfo() {
-        const items = Object.keys(this.cart).map((id) => {
-            // return {
-            //   id: id,
-            //   title: this.cart[id].title,
-            //   amount: this.cart[id].amount,
-            //   price: this.cart[id].price
-            // }
+        const items: Items[] = Object.keys(this.cart).map((id) => {
             return { id, ...this.cart[id] };
         });
 
@@ -50,6 +49,26 @@ export class CartService {
             return (sum += item.amount * item.price);
         }, 0);
 
+        // const promoPrice = totalPrice * 0.9;
+        // const twoPromoPrice = totalPrice * 0.8;
+
         return { items, totalPrice };
+    }
+
+    checkPromo({ totalPrice }) {
+        let promo = 'RSS';
+        let reg = new RegExp('^' + promo + '$');
+        if (reg.test(document.form.text.value)) {
+            let totalPrice = totalPrice * 0.9;
+            return totalPrice;
+        }
+        promo = 'NEWYEAR';
+        reg = new RegExp('^' + promo + '$');
+        if (reg.test(document.form.text.value)) {
+            let totalPrice = totalPrice * 0.8;
+        } else {
+            alert('Promo is not valid!');
+        }
+        return totalPrice;
     }
 }
