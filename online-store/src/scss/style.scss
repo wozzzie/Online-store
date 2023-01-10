@@ -1,0 +1,15 @@
+@import 'base/_mixins.scss';
+@import 'base/_variables.scss';
+
+@import 'blocks/_footer.scss';
+@import 'blocks/_header.scss';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
