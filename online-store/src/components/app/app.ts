@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import Router from './../controller/router';
 import { HTMLService } from './htmlService';
 import { CartService } from './cartService';
@@ -11,7 +8,7 @@ import { FilterService } from './filterService';
 import { initSliders } from '../slider/slider';
 
 let productService: ProductService;
-let displayedProducts;
+let displayedProducts: IData | IData[];
 
 const cartService = new CartService();
 const htmlService = new HTMLService();
@@ -184,14 +181,14 @@ if (cartContainer) {
 // }
 
 function renderErrorSearch() {
-    productsContainer.innerHTML = 'No items found. Try another filter option.';
+    if (productsContainer) productsContainer.innerHTML = 'No items found. Try another filter option.';
 }
 
 function createCard(id: IData) {
     card ? (card.innerHTML = htmlService.paintCardItem(id)) : 'Error';
 }
 
-export function renderProducts(products) {
+export function renderProducts(products: IData) {
     productsContainer ? (productsContainer.innerHTML = htmlService.paintProducts(products)) : 'Error';
 }
 
@@ -199,18 +196,28 @@ export function renderCart() {
     cartContainer ? (cartContainer.innerHTML = htmlService.paintCart(cartService.getInfo())) : 'Error';
 }
 
-function renderFilter(products) {
-    filterContainer.innerHTML = filterService.paintFilter(products);
+function renderFilter(products: IData) {
+    if (filterContainer) filterContainer.innerHTML = filterService.paintFilter(products);
     initSliders(products);
 }
 
 function searchProductsByName() {
-    filterInput.addEventListener('input', (event) => {
-        const value = event.target.value;
+    filterInput?.addEventListener('input', (event) => {
+        const eventTarget = event.target as HTMLInputElement;
+        const value = eventTarget?.value;
 
         renderProducts(
             displayedProducts.filter(
-                (product) =>
+                (product: {
+                    title: string;
+                    description: string;
+                    brand: string;
+                    category: string;
+                    price: { toString: () => string | string[] };
+                    rating: { toString: () => string | string[] };
+                    discountPercentage: { toString: () => string | string[] };
+                    stock: { toString: () => string | string[] };
+                }) =>
                     product.title.toLowerCase().includes(value.toLowerCase()) ||
                     product.description.toLowerCase().includes(value.toLowerCase()) ||
                     product.brand.toLowerCase().includes(value.toLowerCase()) ||
@@ -225,18 +232,18 @@ function searchProductsByName() {
     });
 }
 
-function filterByCategories(products) {
+function filterByCategories(products: IData) {
     const categoriesCheckboxes = document.querySelectorAll('[data-type="category"]');
     const brandsCheckboxes = document.querySelectorAll('[data-type="brand"]');
-    let choosenCheckboxes = [];
+    let choosenCheckboxes: [] = [];
 
     [...categoriesCheckboxes, ...brandsCheckboxes].forEach((item) => {
         item.addEventListener('click', (event) => {
             const isBrandsChecked = Array.from(brandsCheckboxes).some((el) => el.checked);
             const isCategoriesChecked = Array.from(categoriesCheckboxes).some((el) => el.checked);
 
-            const targetId = event.target.id;
-            if (event.target.checked) {
+            const targetId = event.target?.id;
+            if (event.target?.checked) {
                 choosenCheckboxes.push(targetId);
             } else {
                 choosenCheckboxes = choosenCheckboxes.filter((checkboxItem) => checkboxItem !== targetId);
@@ -246,7 +253,7 @@ function filterByCategories(products) {
             // console.log('choosenCheckboxes', choosenCheckboxes);
             // console.log('isCategoriesChecked', isCategoriesChecked);
 
-            const filteredProducts = products.filter((el) => {
+            const filteredProducts = products.filter((el: { category: string; brand: string }) => {
                 if (isBrandsChecked && isCategoriesChecked) {
                     return choosenCheckboxes.includes(el.category) && choosenCheckboxes.includes(el.brand);
                 } else if (isBrandsChecked) {

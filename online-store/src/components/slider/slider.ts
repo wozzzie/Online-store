@@ -1,14 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import './slider.css';
 
 import { filterByRanges } from '../app/app';
+import { IData } from '../types';
 
-export function getRangeByParam(products: any, param: string) {
-    const productsByParam = products.map((productItem: any) => productItem[param]);
+export function getRangeByParam(products: IData, param: string) {
+    const productsByParam = products.map((productItem) => productItem[param]);
 
     const maxValue = Math.max(...productsByParam);
     const minValue = Math.min(...productsByParam);
@@ -21,11 +19,11 @@ export function renderSlider(id: string) {
             <div class="price_value" id="${id}_slider-value"></div>`;
 }
 
-export function initSliders(products: any) {
+export function initSliders(products: IData) {
     ['price', 'stock'].forEach((item) => createSlider(products, item));
 }
 
-function createSlider(products: any, id: string) {
+function createSlider(products: IData, id: string) {
     const { minValue, maxValue } = getRangeByParam(products, id);
 
     const nonLinearStepSlider = document.getElementById(`${id}_slider`);

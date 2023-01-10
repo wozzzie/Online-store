@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 class Router {
     routes = [];
     mode = null;
@@ -13,12 +10,12 @@ class Router {
         this.listen();
     }
 
-    add = (path, cb) => {
+    add = (path: string | RegExp, cb: { (): void; (): void; (): void }) => {
         this.routes.push({ path, cb });
         return this;
     };
 
-    remove = (path) => {
+    remove = (path: string) => {
         for (let i = 0; i < this.routes.length; i += 1) {
             if (this.routes[i].path === path) {
                 this.routes.slice(i, 1);
@@ -33,7 +30,7 @@ class Router {
         return this;
     };
 
-    clearSlashes = (path) => path.toString().replace(/\/$/, '').replace(/^\//, '');
+    clearSlashes = (path: string) => path.toString().replace(/\/$/, '').replace(/^\//, '');
 
     getFragment = () => {
         let fragment = '';

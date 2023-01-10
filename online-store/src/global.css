@@ -28,6 +28,11 @@ header h1 {
     color: white;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+}
+
 .header-cart {
     width: 50px;
     height: 50px;
@@ -284,7 +289,7 @@ hr {
 }
 
 .product-list h3 {
-    color: #39404B;
+    color: #39404b;
     height: 35px;
     text-transform: uppercase;
     font-weight: 600;
@@ -292,7 +297,7 @@ hr {
 }
 
 .price {
-    color: #E34D38;
+    color: #e34d38;
     margin-bottom: 25px;
     font-size: 16px;
 }
@@ -300,7 +305,7 @@ hr {
 .discount {
     display: inline;
     float: right;
-    color: #E34D38;
+    color: #e34d38;
     font-size: 11px;
 }
 
@@ -364,7 +369,7 @@ hr {
 .add-to-cart:hover,
 .add-to-cart:active,
 .add-to-cart:focus {
-    background-color: #56B280;
+    background-color: #56b280;
 }
 
 .cart-button {
@@ -447,7 +452,7 @@ hr {
 
 .cart-list li:hover {
     background: #eee;
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
 .cart-tittle {
@@ -467,7 +472,7 @@ hr {
 .amount {
     margin: auto;
     display: inline-flex;
-    background: #56B280;
+    background: #56b280;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -488,8 +493,8 @@ hr {
 }
 
 .add-button {
-    padding: .5rem 1rem;
-    background: #56B280;
+    padding: 0.5rem 1rem;
+    background: #56b280;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -497,8 +502,8 @@ hr {
 }
 
 .remove-button {
-    padding: .5rem 1rem;
-    background: #56B280;
+    padding: 0.5rem 1rem;
+    background: #56b280;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -623,23 +628,23 @@ footer {
     margin-top: 60px;
 }
 
-  /* Product Description */
+/* Product Description */
 .product-description {
-    border-bottom: 1px solid #E1E8EE;
+    border-bottom: 1px solid #e1e8ee;
 }
 
 .product-description h3 {
     font-weight: 300;
     font-size: 52px;
-    color: #43484D;
+    color: #43484d;
     letter-spacing: -2px;
 }
 
-/* Cable Configuration */  
+/* Cable Configuration */
 .product-configuration {
-    border-bottom: 1px solid #E1E8EE;
+    border-bottom: 1px solid #e1e8ee;
 }
-    
+
 .product-configuration > p {
     color: #333;
     font-size: 16px;
@@ -654,16 +659,16 @@ footer {
     font-size: 18px;
     font-weight: 600;
 }
-    
+
 .cart-btn {
     display: inline-block;
-    background-color: #7DC855;
+    background-color: #7dc855;
     border-radius: 6px;
     font-size: 16px;
-    color: #FFFFFF;
+    color: #ffffff;
     text-decoration: none;
     padding: 12px 30px;
-    transition: all .5s;
+    transition: all 0.5s;
 }
 
 .cart-btn:hover {
@@ -683,7 +688,7 @@ footer {
     position: relative;
     transition: all 500ms ease-in-out;
 }
-  
+
 .slide.active {
     flex: 8;
 }

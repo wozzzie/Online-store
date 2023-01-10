@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import { renderSlider } from '../slider/slider';
 import { IData } from '../types';
 
@@ -33,11 +30,12 @@ export class FilterService {
     }
 
     filterFunction(product: IData, flag: string) {
-        const arr: [] = [];
+        const arr: string[] = [];
         product.forEach((el: { category: string; brand: string }) =>
             flag === 'category' ? arr.push(el.category) : arr.push(el.brand)
         );
-        const counts = {};
+
+        const counts: { [key: string] } = {};
         arr.forEach(function (x) {
             counts[x] = (counts[x] || 0) + 1;
         });

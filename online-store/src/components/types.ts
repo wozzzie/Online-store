@@ -1,5 +1,4 @@
 // export type Callback<T> = (data: T) => void;
-
 // export enum Status {
 //     'unauthorized' = 401,
 //     'notFound' = 404

@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-
 import { IData } from '../types';
 
 const Sorts = ['price-ascent', 'price-descent', 'rating-ascent', 'rating-descent'];
@@ -12,17 +9,18 @@ export class Sort {
     public ratingDescent: HTMLAnchorElement;
 
     constructor() {
-        this.priceAscent = document.getElementById('price-ascent');
-        this.priceDescent = document.getElementById('price-descent');
-        this.ratingAscent = document.getElementById('rating-ascent');
-        this.ratingDescent = document.getElementById('rating-descent');
+        this.priceAscent = document.getElementById('price-ascent') as HTMLAnchorElement;
+        this.priceDescent = document.getElementById('price-descent') as HTMLAnchorElement;
+        this.ratingAscent = document.getElementById('rating-ascent') as HTMLAnchorElement;
+        this.ratingDescent = document.getElementById('rating-descent') as HTMLAnchorElement;
     }
 
     public sort(event: Event, data: IData[]) {
-        const id = event.target.dataset.id;
+        const eventTarget = event.target as HTMLButtonElement;
+        const id = eventTarget?.dataset.id;
 
         if (Sorts.some((item): boolean => item === id)) {
-            return this.sortBy(id, data);
+            if (id) return this.sortBy(id, data);
         }
     }
 

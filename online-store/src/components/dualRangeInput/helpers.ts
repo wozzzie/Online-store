@@ -1,5 +1,7 @@
-export function getRangeByParam(products: any, param: string) {
-    const productsByParam = products.map((productItem: any) => productItem[param]);
+import { IData } from '../types';
+
+export function getRangeByParam(products: IData, param: string) {
+    const productsByParam = products.map((productItem) => productItem[param]);
 
     const maxValue = Math.max(...productsByParam);
     const minValue = Math.min(...productsByParam);
@@ -8,10 +10,10 @@ export function getRangeByParam(products: any, param: string) {
     return { maxValue, minValue, stepValue };
 }
 
-export function updateRangeText(element: Element, slider: any, min: string) {
+export function updateRangeText(element: Element, slider, min: string) {
     const step = Number(slider.dataset.step);
     const value = Number(min) + Number(slider.value) * step;
-    console.log(value)
+    console.log(value);
     element.innerHTML = isNaN(value) ? '' : value.toFixed(2);
     return value;
 }
